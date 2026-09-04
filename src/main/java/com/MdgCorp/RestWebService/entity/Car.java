@@ -1,24 +1,27 @@
-package com.MdgCorp.RestWebService;
+package com.MdgCorp.RestWebService.entity;
 
-import java.util.List;
-import java.util.ArrayList;
+import jakarta.persistence.*;
 
+@Entity
 public class Car {
 
     // Attributs
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "car_seq")
+    @SequenceGenerator(name = "car_seq", sequenceName = "car_id_seq", allocationSize = 1)
+    private Long id;
+
     private String plateNumber;
     private String brand;
     private double price;
     private boolean rent = false;
-    static List<Car> listCar = new ArrayList<Car>();
 
-    public Car(){Car.listCar.add(this);}
+    public Car(){}
 
     public Car(String plateNumber, String brand, double price){
         this.plateNumber = plateNumber;
         this.brand = brand;
         this.price = price;
-        Car.listCar.add(this);
     }
 
     //Getters
@@ -31,11 +34,11 @@ public class Car {
     public double getPrice() {
         return price;
     }
-    public static List<Car> getListCar() {
-        return listCar;
-    }
     public boolean isRent() {
         return rent;
+    }
+    public Long getId() {
+        return id;
     }
 
     //Setters
@@ -51,14 +54,23 @@ public class Car {
     public void setRent(boolean rent) {
         this.rent = rent;
     }
-
-    //Methods
-    static List<Car> listOfCars(){
-        return Car.listCar;
+    public void setId(Long id) {
+        this.id = id;
     }
 
+    //Methods
     public void toggleRent(){
         this.rent = !this.rent;
+    }
+
+    @Override
+    public String toString(){
+        return "<p>{<br>" +
+                "<span> Platenumber : " + this.plateNumber +
+                "<br><span> Brand : " + this.brand +
+                "<br><span> Price : " + this.price +
+                "<br><span> Rent : " + this.rent +
+                "<br>}</p>";
     }
 
 }
