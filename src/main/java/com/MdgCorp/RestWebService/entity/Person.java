@@ -15,6 +15,17 @@ public class Person {
     private String surname;
     private String mail;
 
+    //Constructor
+    public Person(){}
 
 
+    //Setters
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    //Getters
+    public Long getId() {
+        return id;
+    }
 }

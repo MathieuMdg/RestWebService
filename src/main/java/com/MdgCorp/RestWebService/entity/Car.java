@@ -16,6 +16,7 @@ public class Car {
     private double price;
     private boolean rent = false;
 
+    //Constructor
     public Car(){}
 
     public Car(String plateNumber, String brand, double price){
