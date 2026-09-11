@@ -24,15 +24,22 @@ public class ContractService {
 
     // Service access ContractRepository
     private final ContractRepository contractRepository;
+    private final CarRepository carRepository;
 
     //Constructors
-    public ContractService(ContractRepository contractRepository){
+    public ContractService(ContractRepository contractRepository, CarRepository carRepository){
         this.contractRepository = contractRepository;
+        this.carRepository = carRepository;
     }
 
     //Methods
     public void addContract(Contract contract){
         try {
+            if(contract.getEndDate() == null){
+                Car car = contract.getCar();
+                car.toggleRent();
+                carRepository.save(car);
+            }
             contractRepository.save(contract);
             log.warn("Contract added : {}", contract);
         }

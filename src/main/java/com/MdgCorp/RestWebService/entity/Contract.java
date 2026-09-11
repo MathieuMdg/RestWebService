@@ -48,6 +48,22 @@ public class Contract {
         return car;
     }
 
+    public LocalDate getStartDate() {
+        return startDate;
+    }
+
+    public LocalDate getEndDate() {
+        return endDate;
+    }
+
+    public Long getContractID() {
+        return contractID;
+    }
+
+    public Person getPerson() {
+        return person;
+    }
+
     public Person getPersons() {
         return person;
     }
@@ -64,6 +80,22 @@ public class Contract {
 
     public void setPersons(Person persons) {
         this.person = persons;
+    }
+
+    public void setContractID(Long contractID) {
+        this.contractID = contractID;
+    }
+
+    public void setPerson(Person person) {
+        this.person = person;
+    }
+
+    public void setEndDate(LocalDate endDate) {
+        this.endDate = endDate;
+    }
+
+    public void setStartDate(LocalDate startDate) {
+        this.startDate = startDate;
     }
 
 }

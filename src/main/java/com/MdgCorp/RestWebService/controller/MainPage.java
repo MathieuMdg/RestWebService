@@ -30,7 +30,6 @@ public class MainPage {
     }
 
     // Generate Random Cars
-    @PostConstruct
     public void initializeCars() {
         Random random = new Random();
         String[] brands = {
@@ -75,7 +74,6 @@ public class MainPage {
     }
 
     // Generate Random Persons
-    @PostConstruct
     public void initializePersons() {
         Random random = new Random();
         String[] names = {
@@ -98,7 +96,6 @@ public class MainPage {
         }
     }
 
-    @PostConstruct
     public void initializeContracts() {
 
         Random random = new Random();
@@ -126,6 +123,13 @@ public class MainPage {
                     new Contract(person, car, startDate, endDate)
             );
         }
+    }
+
+    @PostConstruct
+    public void initializeData() {
+        initializeCars();
+        initializePersons();
+        initializeContracts();
     }
 
     // Main Page
