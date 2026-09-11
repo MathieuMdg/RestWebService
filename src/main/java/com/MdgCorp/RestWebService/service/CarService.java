@@ -43,4 +43,15 @@ public class CarService {
     public List<Car> getCars(){
         return (List<Car>) carRepository.findAll();
     }
+
+    public void carToggleRent(Car car, Boolean rent){
+        try {
+            car.setRent(rent);
+            carRepository.save(car);
+            log.warn("Car rent toggled : {}", car);
+        }
+        catch (Exception e) {
+            throw new NotSavedInDatabase("Can't toggle rent : " + e.getMessage());
+        }
+    }
 }

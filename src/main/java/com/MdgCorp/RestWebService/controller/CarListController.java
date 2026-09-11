@@ -116,8 +116,8 @@ public class CarListController {
             if (Objects.equals(car.getPlateNumber(), plateNumber)) {
 
                 String rentStatus = car.isRent()
-                        ? "<span class='badge available'>AVAILABLE</span>"
-                        : "<span class='badge rented'>RENTED</span>";
+                        ? "<span class='badge rented'>RENTED</span>"
+                        : "<span class='badge available'>AVAILABLE</span>";
 
                 return "<html>" +
                         "<head>" +
@@ -208,7 +208,7 @@ public class CarListController {
 
         for (Car car : carService.getCars()) {
             if (Objects.equals(car.getPlateNumber(), plateNumber)) {
-                car.toggleRent();
+                carService.carToggleRent(car, rent);
             }
         }
     }
