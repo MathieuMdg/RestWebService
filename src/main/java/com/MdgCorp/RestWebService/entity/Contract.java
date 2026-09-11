@@ -3,6 +3,7 @@ package com.MdgCorp.RestWebService.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,13 +16,28 @@ public class Contract {
     @SequenceGenerator(name="person_seq", sequenceName="person_id_seq",allocationSize=1)
     private Long contractID;
 
-    @OneToMany(mappedBy = "contract", fetch = FetchType.LAZY)
-    @JsonIgnore
-    private List<Person> persons = new ArrayList<>();
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "person_id")
+    private Person person;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "car_id")
     private Car car;
+
+    LocalDate startDate;
+    LocalDate endDate;
+
+
+    //Constructors
+    public Contract(){}
+
+    public Contract(Person person, Car car, LocalDate startDate, LocalDate endDate){
+        this.person = person;
+        this.car = car;
+        this.startDate = startDate;
+        this.endDate = endDate;
+    }
+
 
     //Getters
     public Long getId() {
@@ -32,8 +48,8 @@ public class Contract {
         return car;
     }
 
-    public List<Person> getPersons() {
-        return persons;
+    public Person getPersons() {
+        return person;
     }
 
 
@@ -46,8 +62,8 @@ public class Contract {
         this.car = car;
     }
 
-    public void setPersons(List<Person> persons) {
-        this.persons = persons;
+    public void setPersons(Person persons) {
+        this.person = persons;
     }
 
 }

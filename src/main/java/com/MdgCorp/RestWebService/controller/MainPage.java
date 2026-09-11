@@ -1,20 +1,32 @@
 package com.MdgCorp.RestWebService.controller;
 
 import com.MdgCorp.RestWebService.entity.Car;
-import com.MdgCorp.RestWebService.service.CarRentalService;
+import com.MdgCorp.RestWebService.entity.Contract;
+import com.MdgCorp.RestWebService.entity.Person;
+import com.MdgCorp.RestWebService.service.CarService;
+import com.MdgCorp.RestWebService.service.ContractService;
+import com.MdgCorp.RestWebService.service.PersonService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import jakarta.annotation.PostConstruct;
 
+import java.time.LocalDate;
+import java.util.List;
 import java.util.Random;
 
 @RestController
 public class MainPage {
 
-    private final CarRentalService carRentalService;
+    private final CarService carService;
 
-    public MainPage(CarRentalService carRentalService) {
-        this.carRentalService = carRentalService;
+    private final PersonService personService;
+
+    private final ContractService contractService;
+
+    public MainPage(CarService carService, PersonService personService, ContractService contractService) {
+        this.carService = carService;
+        this.personService = personService;
+        this.contractService = contractService;
     }
 
     // Generate Random Cars
@@ -56,8 +68,62 @@ public class MainPage {
                 );
             }
             double price = 10 + (90 * random.nextDouble());
-            carRentalService.addCar(
+            carService.addCar(
                     new Car(plateNumber.toString(), brand, price)
+            );
+        }
+    }
+
+    // Generate Random Persons
+    @PostConstruct
+    public void initializePersons() {
+        Random random = new Random();
+        String[] names = {
+                "Zaif",
+                "Roland",
+                "Marc",
+                "Joseph",
+                "Jacques",
+                "Elise",
+                "Clara",
+                "Marin",
+                "Jeanne",
+                "Mathieu"
+        };
+        for (int i = 0; i < 10; i++) {
+
+            personService.addPerson(
+                    new Person(names[i])
+            );
+        }
+    }
+
+    @PostConstruct
+    public void initializeContracts() {
+
+        Random random = new Random();
+
+        List<Person> persons = personService.getPersons();
+        List<Car> cars = carService.getCars();
+
+        for (int i = 0; i < 5; i++) {
+
+            Person person = persons.get(random.nextInt(persons.size()));
+            Car car = cars.get(random.nextInt(cars.size()));
+
+            LocalDate startDate = LocalDate.now()
+                    .minusDays(30 + random.nextInt(151));
+
+            LocalDate endDate;
+
+            if (random.nextInt(100) < 40) {
+                endDate = null;
+            } else {
+                endDate = startDate.plusDays(1 + random.nextInt(30));
+            }
+
+            contractService.addContract(
+                    new Contract(person, car, startDate, endDate)
             );
         }
     }

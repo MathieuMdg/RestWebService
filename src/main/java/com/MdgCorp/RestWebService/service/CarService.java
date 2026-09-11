@@ -1,88 +1,53 @@
 package com.MdgCorp.RestWebService.service;
 
 import com.MdgCorp.RestWebService.entity.Car;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
+import com.MdgCorp.RestWebService.entity.Person;
+import com.MdgCorp.RestWebService.exception.NotSavedInDatabase;
+import com.MdgCorp.RestWebService.repository.CarRepository;
+import org.springframework.stereotype.Service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
-@RestController
+@Service
 public class CarService {
 
-    private final CarRentalService carRentalService;
+    //Attributes
+    // Specify in logs
+    private static final Logger log = LoggerFactory.getLogger(CarService.class);
 
-    public CarService(CarRentalService carRentalService) {
-        this.carRentalService = carRentalService;
+    // Service access UserRepository
+    private final CarRepository carRepository;
+
+    //Constructors
+    public CarService(CarRepository carRepository){
+        this.carRepository = carRepository;
     }
 
-    // Get List of cars
-    @GetMapping("/view/cars")
-    @ResponseStatus(HttpStatus.OK)
-    public String ViewListOfCars() {
+    private final List<Car> listCar = new ArrayList<>();
 
-        StringBuilder html = new StringBuilder();
 
-        html.append("<html>")
-                .append("<a href='/'><-- Back</a>")
-                .append("<h1 style=\"text-align: center;\">List Of Cars</h1>")
-                .append("<body>")
-                .append("<p><ul>");
-
-        for (Car car : carRentalService.getListCar()) {
-            html.append("<li>")
-                    .append("<a href='/view/cars/")
-                    .append(car.getPlateNumber())
-                    .append("'>")
-                    .append(car.getPlateNumber())
-                    .append("</a>")
-                    .append("</li>");
-        }
-
-        html.append("</ul></p>")
-                .append("</body>")
-                .append("</html>");
-
-        carRentalService.addCar(
-                new Car("Test", "MdgTestingTeam", 0.0)
-        );
-
-        return html.toString();
+    //Getters
+    public List<Car> getListCar() {
+        return listCar;
     }
 
-
-    // Get a car by plateNumber
-    @GetMapping("/view/cars/{plateNumber}")
-    @ResponseStatus(HttpStatus.OK)
-    public String Print(@PathVariable("plateNumber") String plateNumber) throws Exception {
-
-        Car newC = new Car();
-
-        for (Car car : carRentalService.getListCar()) {
-            if (Objects.equals(car.getPlateNumber(), plateNumber)) {
-                newC = car;
-            }
+    //Methods
+    public void addCar(Car car){
+        try {
+            carRepository.save(car);
+            listCar.add(car);
+            log.warn("Car added : {}", car);
         }
-
-        return "<html>" +
-                "<body>" +
-                "<a href='/view/cars'><-- Back</a>" +
-                "<p>" + newC.toString() + "</p>" +
-                "</body>" +
-                "</html>";
+        catch (Exception e) {
+            throw new NotSavedInDatabase("Can't add car in database : " + e.getMessage());
+        }
     }
 
-    @PutMapping("/cars/{plateNumber}")
-    @ResponseStatus(HttpStatus.OK)
-    public void rentOrGetBack(
-            @PathVariable("plateNumber") String plateNumber,
-            @RequestParam(value = "rent", required = true) boolean rent
-    ) throws Exception {
-
-        for (Car car : carRentalService.getListCar()) {
-            if (Objects.equals(car.getPlateNumber(), plateNumber)) {
-                car.toggleRent();
-            }
-        }
+    public List<Car> getCars(){
+        return (List<Car>) carRepository.findAll();
     }
 }

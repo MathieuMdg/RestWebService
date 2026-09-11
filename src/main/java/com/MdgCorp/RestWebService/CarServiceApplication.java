@@ -1,7 +1,7 @@
 package com.MdgCorp.RestWebService;
 
 import com.MdgCorp.RestWebService.entity.Car;
-import com.MdgCorp.RestWebService.service.CarRentalService;
+import com.MdgCorp.RestWebService.service.CarService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -15,12 +15,8 @@ public class CarServiceApplication {
     }
 
     @Bean
-    public CommandLineRunner demo(CarRentalService carRentalService) {
+    public CommandLineRunner demo(CarService carService) {
         return (args) -> {
-            Car car = new Car("11AA22", "Ferrari", 1000);
-            carRentalService.addCar(car);
-            car = new Car("22BB44", "Porshe", 2000);
-            carRentalService.addCar(car);
         };
     };
 

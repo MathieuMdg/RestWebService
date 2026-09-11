@@ -3,6 +3,9 @@ package com.MdgCorp.RestWebService.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 public class Person {
 
@@ -12,26 +15,23 @@ public class Person {
     @SequenceGenerator(name="person_seq", sequenceName="person_id_seq",allocationSize=1)
     private Long personID;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "contract_id")
-    private Contract contract;
+    @OneToMany(mappedBy = "person", fetch = FetchType.LAZY)
+    @JsonIgnore
+    private List<Contract> contracts = new ArrayList<>();
 
 
     private String name;
-    private String surname;
     private String mail;
 
     //Constructor
     public Person(){}
 
+    public Person(String name){this.name = name;}
+
 
     //Setters
     public void setId(Long id) {
         this.personID = id;
-    }
-
-    public Contract getContract() {
-        return contract;
     }
 
     public String getName() {
@@ -42,17 +42,10 @@ public class Person {
         return mail;
     }
 
-    public String getSurname() {
-        return surname;
-    }
 
     //Getters
     public Long getId() {
         return personID;
-    }
-
-    public void setContract(Contract contract) {
-        this.contract = contract;
     }
 
     public void setMail(String mail) {
@@ -61,10 +54,6 @@ public class Person {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public void setSurname(String surname) {
-        this.surname = surname;
     }
 
 }
