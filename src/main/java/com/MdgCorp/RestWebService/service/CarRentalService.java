@@ -9,7 +9,7 @@ import java.util.List;
 @Service
 public class CarRentalService{
 
-    //Attributs
+    //Attributes
     private final List<Car> listCar = new ArrayList<>();
 
     //Getters
