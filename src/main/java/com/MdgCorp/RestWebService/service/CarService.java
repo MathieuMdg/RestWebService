@@ -27,19 +27,12 @@ public class CarService {
         this.carRepository = carRepository;
     }
 
-    private final List<Car> listCar = new ArrayList<>();
-
-
-    //Getters
-    public List<Car> getListCar() {
-        return listCar;
-    }
 
     //Methods
     public void addCar(Car car){
         try {
+            car.toggleRent();
             carRepository.save(car);
-            listCar.add(car);
             log.warn("Car added : {}", car);
         }
         catch (Exception e) {

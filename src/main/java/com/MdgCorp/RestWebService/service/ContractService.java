@@ -11,8 +11,6 @@ import org.springframework.stereotype.Service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -49,4 +47,9 @@ public class ContractService {
 
 
     }
+
+    public List<Contract> getContracts(){
+        return (List<Contract>) contractRepository.findAll();
+    }
+
 }

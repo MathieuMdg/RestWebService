@@ -29,7 +29,7 @@ public class CarListController {
                 .append("<body>")
                 .append("<p><ul>");
 
-        for (Car car : carService.getListCar()) {
+        for (Car car : carService.getCars()) {
             html.append("<li>")
                     .append("<a href='/view/cars/")
                     .append(car.getPlateNumber())
@@ -52,20 +52,18 @@ public class CarListController {
     @ResponseStatus(HttpStatus.OK)
     public String Print(@PathVariable("plateNumber") String plateNumber) throws Exception {
 
-        Car newC = new Car();
-
-        for (Car car : carService.getListCar()) {
+        for (Car car : carService.getCars()) {
             if (Objects.equals(car.getPlateNumber(), plateNumber)) {
-                newC = car;
+                return "<html>" +
+                        "<body>" +
+                        "<a href='/view/cars'><-- Back</a>" +
+                        "<p>" + car.toString() + "</p>" +
+                        "</body>" +
+                        "</html>";
             }
         }
 
-        return "<html>" +
-                "<body>" +
-                "<a href='/view/cars'><-- Back</a>" +
-                "<p>" + newC.toString() + "</p>" +
-                "</body>" +
-                "</html>";
+        return "";
     }
 
     @PutMapping("/cars/{plateNumber}")
@@ -75,7 +73,7 @@ public class CarListController {
             @RequestParam(value = "rent", required = true) boolean rent
     ) throws Exception {
 
-        for (Car car : carService.getListCar()) {
+        for (Car car : carService.getCars()) {
             if (Objects.equals(car.getPlateNumber(), plateNumber)) {
                 car.toggleRent();
             }

@@ -140,6 +140,12 @@ public class MainPage {
                     "<a href='/view/cars'>" +
                         "<button>Cars List</button>" +
                     "</a>" +
+                    "<a href='/view/persons'>" +
+                        "<button>Person List</button>" +
+                    "</a>" +
+                    "<a href='/view/contracts'>" +
+                        "<button>Contract List</button>" +
+                    "</a>" +
                 "</html>";
     }
 }
